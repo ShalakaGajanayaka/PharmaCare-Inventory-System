@@ -15,6 +15,7 @@ public class LoginView extends javax.swing.JFrame {
      */
     public LoginView() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -131,11 +132,16 @@ public class LoginView extends javax.swing.JFrame {
             java.sql.ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Login සාර්ථකයි!
-                javax.swing.JOptionPane.showMessageDialog(this, "Login Successful! Welcome " + username, "Success", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-
-                // ToDo: මෙතනින් Dashboard එක open වෙන්න හදන්න.
-                // දැනට Login window එක close කරමු.
+                // Login Successfull!
+                // Hide the login window
+                this.setVisible(false);
+                
+                // Create show the dashboard
+                DashboardView dashboard = new DashboardView();
+                dashboard.setLocationRelativeTo(null); // Center the dashboard
+                dashboard.setVisible(true);
+                
+                // Close the login window permenently
                 this.dispose();
 
             } else {
