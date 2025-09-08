@@ -1,16 +1,28 @@
 package com.pharmacare.main;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
 import com.pharmacare.view.LoginView;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 public class App {
     public static void main(String[] args) {
-        // Create an object of our LoginView
-        LoginView loginScreen = new LoginView();
+        // --- THIS IS THE THEME CODE ---
+        try {
+           // Set the flatlaf light theme
+            UIManager.setLookAndFeel(new FlatLightLaf());
+        } catch (Exception e) {
+            System.err.println("Failed to initialize LaF");
+        }
+        // --- THEME CODE ENDS HERE ---
+       
         
-        // Center the window on the screen
-        loginScreen.setLocationRelativeTo(null);
-        
-        // Make the window visible
-        loginScreen.setVisible(true);
+        // Start the application on the correct thread
+        SwingUtilities.invokeLater(()->{
+            LoginView loginScreen = new LoginView();
+            loginScreen.setLocationRelativeTo(null);
+            loginScreen.setVisible(true);
+        });
     }
 }
