@@ -41,10 +41,11 @@ public class MedicinePanel extends javax.swing.JPanel {
         dateExpiry = new com.toedter.calendar.JDateChooser();
         jLabel21 = new javax.swing.JLabel();
         jComboBox2 = new javax.swing.JComboBox<>();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnClear = new javax.swing.JButton();
+        lblMedicineId = new javax.swing.JLabel();
         medicineListPanel = new com.pharmacare.customui.RoundedPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -91,18 +92,33 @@ public class MedicinePanel extends javax.swing.JPanel {
 
         jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton5.setText("Save");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnSave.setText("Save");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnSaveActionPerformed(evt);
             }
         });
 
-        jButton6.setText("Update");
+        btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
-        jButton7.setText("Delete");
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
-        jButton8.setText("Clear");
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout medicineDetailsPanelLayout = new javax.swing.GroupLayout(medicineDetailsPanel);
         medicineDetailsPanel.setLayout(medicineDetailsPanelLayout);
@@ -111,7 +127,6 @@ public class MedicinePanel extends javax.swing.JPanel {
             .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -145,21 +160,26 @@ public class MedicinePanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jButton5)
+                        .addComponent(btnSave)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton6)
+                        .addComponent(btnUpdate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton7)
+                        .addComponent(btnDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8)
-                        .addGap(0, 1, Short.MAX_VALUE)))
+                        .addComponent(btnClear))
+                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblMedicineId, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         medicineDetailsPanelLayout.setVerticalGroup(
             medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel13)
+                .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblMedicineId, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
@@ -194,11 +214,11 @@ public class MedicinePanel extends javax.swing.JPanel {
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6)
-                    .addComponent(jButton7)
-                    .addComponent(jButton8))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addComponent(btnSave)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete)
+                    .addComponent(btnClear))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
 
         medicineDetailsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {dateExpiry, jComboBox2, jLabel14, jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel20, jLabel21, jTextField10, jTextField9, spinnerQty, txtBarcode, txtMedicineName, txtSellPrice});
@@ -228,6 +248,11 @@ public class MedicinePanel extends javax.swing.JPanel {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tblMedicines.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblMedicinesMousePressed(evt);
             }
         });
         jScrollPane2.setViewportView(tblMedicines);
@@ -296,7 +321,7 @@ public class MedicinePanel extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtSellPriceActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         String barcode = txtBarcode.getText();
         String name = txtMedicineName.getText();
         int quantity = (int) spinnerQty.getValue();
@@ -335,7 +360,116 @@ public class MedicinePanel extends javax.swing.JPanel {
             e.printStackTrace();
             javax.swing.JOptionPane.showMessageDialog(this, "Failed to add medicine.", "Database Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void tblMedicinesMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblMedicinesMousePressed
+        // Get the table model
+        javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) tblMedicines.getModel();
+
+        // Get the selected row index
+        int selectedRow = tblMedicines.getSelectedRow();
+
+        if (selectedRow != -1) { // Check if a row is actually selected
+            // Get data from the model
+            // Column 0 is ID, 1 is Barcode, 2 is Name, etc.
+            String id = dtm.getValueAt(selectedRow, 0).toString(); // We will need this for update/delete
+            String barcode = dtm.getValueAt(selectedRow, 1).toString();
+            String name = dtm.getValueAt(selectedRow, 2).toString();
+            int quantity = Integer.parseInt(dtm.getValueAt(selectedRow, 3).toString());
+            String price = dtm.getValueAt(selectedRow, 4).toString();
+            java.util.Date expiryDate = (java.util.Date) dtm.getValueAt(selectedRow, 5);
+
+            // Set data to the form fields
+            txtBarcode.setText(barcode); // Assuming you have these variable names
+            txtMedicineName.setText(name);
+            spinnerQty.setValue(quantity);
+            txtSellPrice.setText(price);
+            dateExpiry.setDate(expiryDate);
+
+            // Store the selected ID in a hidden label or a class variable for later use
+            // This is a good practice. Let's create a hidden label.
+            // Add a JLabel to your form, name it lblMedicineId, and make it invisible.
+            lblMedicineId.setText(id);
+        }
+    }//GEN-LAST:event_tblMedicinesMousePressed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        String id = lblMedicineId.getText(); // Get the ID from our hidden label
+
+        // Check if an ID is selected
+        if (id.isEmpty() || id.equals("0")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a medicine from the table to update.", "No Medicine Selected", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Get updated values from the form
+        String name = txtMedicineName.getText();
+        int quantity = (int) spinnerQty.getValue();
+        double sellingPrice = Double.parseDouble(txtSellPrice.getText());
+        java.util.Date utilDate = dateExpiry.getDate();
+        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+        try {
+            java.sql.Connection con = com.pharmacare.db.DBConnection.getInstance().getConnection();
+            String sql = "UPDATE medicine SET name = ?, quantity = ?, selling_price = ?, expiry_date = ? WHERE id = ?";
+            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setString(1, name);
+            ps.setInt(2, quantity);
+            ps.setDouble(3, sellingPrice);
+            ps.setDate(4, sqlDate);
+            ps.setInt(5, Integer.parseInt(id)); // Set the ID for the WHERE clause
+
+            int result = ps.executeUpdate();
+
+            if (result > 0) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Medicine updated successfully!");
+                loadMedicinesToTable(); // Refresh the table with new data
+                clearFields(); // Clear the form
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Failed to update medicine.", "Database Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnUpdateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        String id = lblMedicineId.getText();
+
+        if (id.isEmpty() || id.equals("0")) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Please select a medicine from the table to delete.", "No Medicine Selected", javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Confirmation Dialog
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this medicine?", "Confirm Deletion", javax.swing.JOptionPane.YES_NO_OPTION);
+
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            try {
+                java.sql.Connection con = com.pharmacare.db.DBConnection.getInstance().getConnection();
+                String sql = "DELETE FROM medicine WHERE id = ?";
+                java.sql.PreparedStatement ps = con.prepareStatement(sql);
+                ps.setInt(1, Integer.parseInt(id));
+
+                int result = ps.executeUpdate();
+
+                if (result > 0) {
+                    javax.swing.JOptionPane.showMessageDialog(this, "Medicine deleted successfully!");
+                    loadMedicinesToTable();
+                    clearFields();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(this, "Failed to delete medicine.", "Database Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        clearFields();
+    }//GEN-LAST:event_btnClearActionPerformed
 
     private void loadMedicinesToTable() {
         javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) tblMedicines.getModel();
@@ -364,12 +498,22 @@ public class MedicinePanel extends javax.swing.JPanel {
         }
     }
 
+    private void clearFields() {
+        txtBarcode.setText("");
+        txtMedicineName.setText("");
+        spinnerQty.setValue(0);
+        txtSellPrice.setText("");
+        dateExpiry.setDate(null);
+        lblMedicineId.setText("0"); // Reset the hidden ID
+        tblMedicines.clearSelection();
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnClear;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JButton btnUpdate;
     private com.toedter.calendar.JDateChooser dateExpiry;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
     private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -387,6 +531,7 @@ public class MedicinePanel extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JLabel lblMedicineId;
     private com.pharmacare.customui.RoundedPanel medicineDetailsPanel;
     private com.pharmacare.customui.RoundedPanel medicineListPanel;
     private javax.swing.JSpinner spinnerQty;
