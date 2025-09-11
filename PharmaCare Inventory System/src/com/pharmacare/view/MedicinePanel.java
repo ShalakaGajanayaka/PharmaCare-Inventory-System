@@ -15,7 +15,14 @@ public class MedicinePanel extends javax.swing.JPanel {
      */
     public MedicinePanel() {
         initComponents();
+        initTableSorter();
         loadMedicinesToTable();
+    }
+
+    private void initTableSorter() {
+        javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) tblMedicines.getModel();
+        javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(dtm);
+        tblMedicines.setRowSorter(sorter);
     }
 
     @SuppressWarnings("unchecked")
@@ -49,7 +56,7 @@ public class MedicinePanel extends javax.swing.JPanel {
         medicineListPanel = new com.pharmacare.customui.RoundedPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jTextField12 = new javax.swing.JTextField();
+        txtSearch = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMedicines = new javax.swing.JTable();
 
@@ -231,6 +238,12 @@ public class MedicinePanel extends javax.swing.JPanel {
 
         jLabel11.setText("Search:");
 
+        txtSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSearchKeyReleased(evt);
+            }
+        });
+
         tblMedicines.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
@@ -269,7 +282,7 @@ public class MedicinePanel extends javax.swing.JPanel {
                     .addGroup(medicineListPanelLayout.createSequentialGroup()
                         .addComponent(jLabel11)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField12)))
+                        .addComponent(txtSearch)))
                 .addContainerGap())
         );
         medicineListPanelLayout.setVerticalGroup(
@@ -280,7 +293,7 @@ public class MedicinePanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(medicineListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
@@ -471,6 +484,27 @@ public class MedicinePanel extends javax.swing.JPanel {
         clearFields();
     }//GEN-LAST:event_btnClearActionPerformed
 
+    private void txtSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchKeyReleased
+        // Get the search text from the text field
+        String searchText = txtSearch.getText().toLowerCase(); // Convert to lower case for case-insensitive search
+
+        // Get the table model
+        javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) tblMedicines.getModel();
+
+        // Create a TableRowSorter for filtering
+        javax.swing.table.TableRowSorter<javax.swing.table.DefaultTableModel> sorter = new javax.swing.table.TableRowSorter<>(dtm);
+        tblMedicines.setRowSorter(sorter);
+
+        if (searchText.trim().length() == 0) {
+            // If search text is empty, show all rows
+            sorter.setRowFilter(null);
+        } else {
+            // Create a filter. This will search in all columns.
+            // The "(?i)" part makes the search case-insensitive.
+            sorter.setRowFilter(javax.swing.RowFilter.regexFilter("(?i)" + searchText));
+        }
+    }//GEN-LAST:event_txtSearchKeyReleased
+
     private void loadMedicinesToTable() {
         javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) tblMedicines.getModel();
         dtm.setRowCount(0); // Clear existing rows
@@ -529,7 +563,6 @@ public class MedicinePanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JLabel lblMedicineId;
     private com.pharmacare.customui.RoundedPanel medicineDetailsPanel;
@@ -538,6 +571,7 @@ public class MedicinePanel extends javax.swing.JPanel {
     private javax.swing.JTable tblMedicines;
     private javax.swing.JTextField txtBarcode;
     private javax.swing.JTextField txtMedicineName;
+    private javax.swing.JTextField txtSearch;
     private javax.swing.JTextField txtSellPrice;
     // End of variables declaration//GEN-END:variables
 }
