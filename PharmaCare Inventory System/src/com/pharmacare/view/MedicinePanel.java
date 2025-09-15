@@ -15,6 +15,7 @@ public class MedicinePanel extends javax.swing.JPanel {
      */
     public MedicinePanel() {
         initComponents();
+        lblMedicineId.setVisible(false);
         initTableSorter();
         loadMedicinesToTable();
     }
@@ -135,10 +136,6 @@ public class MedicinePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel14)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBarcode))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtMedicineName))
@@ -166,18 +163,26 @@ public class MedicinePanel extends javax.swing.JPanel {
                         .addComponent(jLabel21)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(btnSave)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdate)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnClear))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblMedicineId, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
+                            .addComponent(jLabel14)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtBarcode))
+                        .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
+                            .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
+                                    .addComponent(btnSave)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnUpdate)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnDelete)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnClear))
+                                .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(lblMedicineId, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(0, 0, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         medicineDetailsPanelLayout.setVerticalGroup(
@@ -366,7 +371,7 @@ public class MedicinePanel extends javax.swing.JPanel {
             if (result > 0) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Medicine added successfully!");
                 loadMedicinesToTable(); // Refresh the table
-                // ToDo: Clear input fields
+                clearFields();
             }
 
         } catch (Exception e) {
@@ -518,7 +523,6 @@ public class MedicinePanel extends javax.swing.JPanel {
             while (rs.next()) {
                 java.util.Vector row = new java.util.Vector();
                 row.add(rs.getInt("id"));
-
                 row.add(rs.getString("barcode"));
                 row.add(rs.getString("name"));
                 row.add(rs.getInt("quantity"));

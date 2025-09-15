@@ -69,6 +69,11 @@ public class DashboardView extends javax.swing.JFrame {
         });
 
         btnNavSuppliers.setText("Suppliers");
+        btnNavSuppliers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNavSuppliersActionPerformed(evt);
+            }
+        });
 
         btnNavReports.setText("Reports");
 
@@ -241,6 +246,15 @@ public class DashboardView extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Error displaying report: " + e.getMessage(), "Report Error", javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void btnNavSuppliersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNavSuppliersActionPerformed
+        SupplierPanel supplierPanel = new SupplierPanel();
+        contentPanel.removeAll();
+        contentPanel.setLayout(new java.awt.BorderLayout());
+        contentPanel.add(supplierPanel, java.awt.BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }//GEN-LAST:event_btnNavSuppliersActionPerformed
 
     /**
      * @param args the command line arguments
