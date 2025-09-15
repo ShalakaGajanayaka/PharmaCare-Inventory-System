@@ -46,6 +46,7 @@ public class DashboardView extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -149,6 +150,15 @@ public class DashboardView extends javax.swing.JFrame {
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Reports");
+
+        jMenuItem3.setText("Medicine List");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Help");
@@ -207,6 +217,31 @@ public class DashboardView extends javax.swing.JFrame {
         loadHomePage();
     }//GEN-LAST:event_btnNavDashboardActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        try {
+            // 1. Get the database connection from our singleton class
+            java.sql.Connection con = com.pharmacare.db.DBConnection.getInstance().getConnection();
+
+            // 2. Define the path to the .jrxml file
+            // The path is relative to the project's root folder
+            String reportPath = "src/reports/rpt_medicines.jrxml";
+
+            // 3. Compile the JRXML file to a JasperReport object
+            net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
+
+            // 4. Create a JasperPrint object by filling the report with data
+            // We don't need parameters for this report, so we pass an empty HashMap
+            net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, null, con);
+
+            // 5. Create a report viewer and display it
+            net.sf.jasperreports.view.JasperViewer.viewReport(jp, false); // 'false' means the app doesn't exit on viewer close
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Error displaying report: " + e.getMessage(), "Report Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,6 +293,7 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel navPanel;
     // End of variables declaration//GEN-END:variables
 }
