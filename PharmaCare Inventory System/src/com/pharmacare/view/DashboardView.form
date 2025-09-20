@@ -99,7 +99,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="btnNavDashboard" max="32767" attributes="0"/>
@@ -107,10 +107,11 @@
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="btnNavLogout" max="32767" attributes="0"/>
                               <Component id="btnNavPOS" alignment="0" max="32767" attributes="0"/>
-                              <Component id="btnNavMedicines" alignment="0" pref="88" max="32767" attributes="0"/>
+                              <Component id="btnNavMedicines" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnNavSuppliers" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnNavReports" alignment="0" max="32767" attributes="0"/>
                               <Component id="btnNavUsers" alignment="0" max="32767" attributes="0"/>
+                              <Component id="btnNavGrn" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
@@ -131,12 +132,14 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnNavSuppliers" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="btnNavGrn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnNavReports" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnNavUsers" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnNavLogout" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="138" max="32767" attributes="0"/>
+                  <EmptySpace pref="109" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -152,7 +155,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnNavPOS">
           <Properties>
-            <Property name="text" type="java.lang.String" value="POS/Sale"/>
+            <Property name="text" type="java.lang.String" value="POS / Sale"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnNavMedicines">
@@ -185,6 +188,14 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Logout"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnNavGrn">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="GRN / Stock In"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNavGrnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

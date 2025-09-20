@@ -1,8 +1,15 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.pharmacare.view;
+
+import com.pharmacare.db.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,6 +22,58 @@ public class GRNPanel extends javax.swing.JPanel {
      */
     public GRNPanel() {
         initComponents();
+        loadSuppliers();
+        loadMedicines();
+
+        // Cart table එකට default model එකක් set කිරීම
+        DefaultTableModel dtm = new DefaultTableModel(new Object[]{"Med. ID", "Medicine Name", "Qty", "Pur. Price", "Total"}, 0);
+        tblGrnItems.setModel(dtm);
+    }
+
+    private void loadSuppliers() {
+        try {
+
+            Connection con = DBConnection.getInstance().getConnection();
+            String sql = "SELECT name FROM supplier ORDER BY name ASC"; // Select ONLY the name
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            // Create a vector to hold the names
+            Vector<String> supplierNames = new Vector<>();
+            supplierNames.add("Select Supplier");
+            while (rs.next()) {
+                supplierNames.add(rs.getString("name")); // Add only the name string
+            }
+
+            // Create a model from the vector and set it to the combo box
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(supplierNames);
+            cmbSupplier.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadMedicines() {
+        try {
+
+            Connection con = DBConnection.getInstance().getConnection();
+            String sql = "SELECT name FROM medicine ORDER BY name ASC"; // Select ONLY the name
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            Vector<String> medicineNames = new Vector<>();
+            medicineNames.add("Select Medicine");
+            while (rs.next()) {
+                medicineNames.add(rs.getString("name"));
+            }
+
+            DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(medicineNames);
+            cmbMedicine.setModel(model);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -30,25 +89,25 @@ public class GRNPanel extends javax.swing.JPanel {
         roundedPanel1 = new com.pharmacare.customui.RoundedPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbSupplier = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jSpinner1 = new javax.swing.JSpinner();
+        cmbMedicine = new javax.swing.JComboBox<>();
+        spinnerQty = new javax.swing.JSpinner();
         jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtPurchasePrice = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
         roundedPanel2 = new com.pharmacare.customui.RoundedPanel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblGrnItems = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        lblTotalBill = new javax.swing.JTextField();
+        btnRemove = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Goods Received Note (GRN) ");
@@ -60,7 +119,7 @@ public class GRNPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Supplier :");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Supplier" }));
+        cmbSupplier.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Supplier" }));
 
         jLabel4.setText("GRN Date :");
 
@@ -69,13 +128,18 @@ public class GRNPanel extends javax.swing.JPanel {
 
         jLabel6.setText("Medicine :");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Medicine" }));
+        cmbMedicine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Medicine" }));
 
         jLabel7.setText("Quantity :");
 
         jLabel8.setText("Purch. Price :");
 
-        jButton1.setText("Add to GRN");
+        btnAdd.setText("Add to GRN");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout roundedPanel1Layout = new javax.swing.GroupLayout(roundedPanel1);
         roundedPanel1.setLayout(roundedPanel1Layout);
@@ -91,7 +155,7 @@ public class GRNPanel extends javax.swing.JPanel {
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbSupplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(roundedPanel1Layout.createSequentialGroup()
                         .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -99,16 +163,16 @@ public class GRNPanel extends javax.swing.JPanel {
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSpinner1)
-                            .addComponent(jComboBox2, 0, 146, Short.MAX_VALUE)))
+                            .addComponent(spinnerQty)
+                            .addComponent(cmbMedicine, 0, 146, Short.MAX_VALUE)))
                     .addGroup(roundedPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField1))
+                        .addComponent(txtPurchasePrice))
                     .addGroup(roundedPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         roundedPanel1Layout.setVerticalGroup(
@@ -119,7 +183,7 @@ public class GRNPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -129,28 +193,28 @@ public class GRNPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jSpinner1)
+                    .addComponent(spinnerQty)
                     .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextField1)
+                    .addComponent(txtPurchasePrice)
                     .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
+                .addComponent(btnAdd)
                 .addContainerGap(121, Short.MAX_VALUE))
         );
 
-        roundedPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jComboBox1, jDateChooser1, jLabel3, jLabel4});
+        roundedPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cmbSupplier, jDateChooser1, jLabel3, jLabel4});
 
         roundedPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel9.setText("GRN Items (Cart) ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblGrnItems.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -166,13 +230,23 @@ public class GRNPanel extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblGrnItems);
 
         jLabel10.setText("Total Bill :");
 
-        jButton2.setText("Remove Selected");
+        btnRemove.setText("Remove Selected");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Save GRN");
+        btnSave.setText("Save GRN");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout roundedPanel2Layout = new javax.swing.GroupLayout(roundedPanel2);
         roundedPanel2.setLayout(roundedPanel2Layout);
@@ -183,15 +257,13 @@ public class GRNPanel extends javax.swing.JPanel {
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(roundedPanel2Layout.createSequentialGroup()
-                        .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1)
-                            .addGroup(roundedPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblTotalBill, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnRemove, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSave, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         roundedPanel2Layout.setVerticalGroup(
@@ -204,11 +276,11 @@ public class GRNPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTotalBill, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(btnRemove)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
+                .addComponent(btnSave)
                 .addContainerGap())
         );
 
@@ -222,7 +294,7 @@ public class GRNPanel extends javax.swing.JPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(roundedPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(roundedPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(roundedPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -232,20 +304,177 @@ public class GRNPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(roundedPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(roundedPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        // Form එකෙන් data ගැනීම
+        Vector selectedMedicine = (Vector) cmbMedicine.getSelectedItem();
+        int medId = (int) selectedMedicine.get(0);
+        String medName = (String) selectedMedicine.get(1);
 
+        int qty = (int) spinnerQty.getValue();
+        double purchasePrice;
+        try {
+            purchasePrice = Double.parseDouble(txtPurchasePrice.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid price.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        double total = qty * purchasePrice;
+
+        if (qty <= 0 || purchasePrice <= 0) {
+            JOptionPane.showMessageDialog(this, "Quantity and Price must be greater than zero.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel dtm = (DefaultTableModel) tblGrnItems.getModel();
+
+        // මේ බෙහෙත දැනටමත් cart එකේ තියෙනවද කියලා බැලීම
+        for (int i = 0; i < dtm.getRowCount(); i++) {
+            if ((int) dtm.getValueAt(i, 0) == medId) {
+                JOptionPane.showMessageDialog(this, "This medicine is already in the list. Please remove it to add again.", "Duplicate Item", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+        }
+
+        // Cart table එකට අලුත් row එකක් එකතු කිරීම
+        Vector row = new Vector();
+        row.add(medId);
+        row.add(medName);
+        row.add(qty);
+        row.add(purchasePrice);
+        row.add(total);
+        dtm.addRow(row);
+
+        // Total Bill එක update කිරීම
+        updateTotalBill();
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        DefaultTableModel dtm = (DefaultTableModel) tblGrnItems.getModel();
+        int selectedRow = tblGrnItems.getSelectedRow();
+
+        if (selectedRow != -1) {
+            dtm.removeRow(selectedRow);
+            updateTotalBill(); // Remove කළාට පස්සේ total එක update කිරීම
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an item from the list to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        DefaultTableModel dtm = (DefaultTableModel) tblGrnItems.getModel();
+        if (dtm.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "GRN cart is empty. Please add items first.", "Empty GRN", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // ප්‍රධාන GRN දත්ත ගැනීම
+        Vector selectedSupplier = (Vector) cmbSupplier.getSelectedItem();
+        int supplierId = (int) selectedSupplier.get(0);
+        double totalBill = Double.parseDouble(lblTotalBill.getText());
+        java.sql.Date grnDate = new java.sql.Date(new java.util.Date().getTime()); // වත්මන් දිනය ගැනීම
+
+        Connection con = null;
+        try {
+            con = DBConnection.getInstance().getConnection();
+            // === Transaction එක පටන් ගැනීම ===
+            con.setAutoCommit(false);
+
+            // 1. ප්‍රධාන GRN record එක INSERT කිරීම
+            String grnSql = "INSERT INTO grn (supplier_id, grn_date, total_bill) VALUES (?, ?, ?)";
+            PreparedStatement grnPs = con.prepareStatement(grnSql, Statement.RETURN_GENERATED_KEYS);
+            grnPs.setInt(1, supplierId);
+            grnPs.setDate(2, grnDate);
+            grnPs.setDouble(3, totalBill);
+            grnPs.executeUpdate();
+
+            // 2. අලුතෙන් හැදුන GRN එකේ auto-generated ID එක ගැනීම
+            ResultSet rs = grnPs.getGeneratedKeys();
+            int grnId = 0;
+            if (rs.next()) {
+                grnId = rs.getInt(1);
+            }
+
+            // 3. Cart එකේ items ටික loop කරලා save කිරීම සහ stock update කිරීම
+            String grnItemSql = "INSERT INTO grn_item (grn_id, medicine_id, quantity, purchase_price) VALUES (?, ?, ?, ?)";
+            String updateStockSql = "UPDATE medicine SET quantity = quantity + ? WHERE id = ?";
+
+            PreparedStatement grnItemPs = con.prepareStatement(grnItemSql);
+            PreparedStatement updateStockPs = con.prepareStatement(updateStockSql);
+
+            for (int i = 0; i < dtm.getRowCount(); i++) {
+                int medId = (int) dtm.getValueAt(i, 0);
+                int qty = (int) dtm.getValueAt(i, 2); // Corrected index for quantity
+                double purPrice = (double) dtm.getValueAt(i, 3); // Corrected index for price
+
+                // GRN item එක INSERT කිරීම
+                grnItemPs.setInt(1, grnId);
+                grnItemPs.setInt(2, medId);
+                grnItemPs.setInt(3, qty);
+                grnItemPs.setDouble(4, purPrice);
+                grnItemPs.addBatch();
+
+                // Medicine stock එක UPDATE කිරීම
+                updateStockPs.setInt(1, qty);
+                updateStockPs.setInt(2, medId);
+                updateStockPs.addBatch();
+            }
+
+            grnItemPs.executeBatch();
+            updateStockPs.executeBatch();
+
+            // === හැමදේම සාර්ථක නම්, transaction එක commit කිරීම ===
+            con.commit();
+            JOptionPane.showMessageDialog(this, "GRN Saved Successfully!");
+
+            // Form එක clear කිරීම
+            dtm.setRowCount(0);
+            updateTotalBill();
+
+        } catch (Exception e) {
+            // === මොකක් හරි error එකක් ආවොත්, transaction එක rollback කිරීම ===
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to save GRN. Transaction has been rolled back.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // === හැමවිටම auto-commit එක ආයෙත් true බවට පත් කිරීම ===
+            try {
+                if (con != null) {
+                    con.setAutoCommit(true);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void updateTotalBill() {
+        DefaultTableModel dtm = (DefaultTableModel) tblGrnItems.getModel();
+        double totalBill = 0;
+        for (int i = 0; i < dtm.getRowCount(); i++) {
+            totalBill += (double) dtm.getValueAt(i, 4);
+        }
+        lblTotalBill.setText(String.format("%.2f", totalBill));
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JButton btnSave;
+    private javax.swing.JComboBox<String> cmbMedicine;
+    private javax.swing.JComboBox<String> cmbSupplier;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -258,11 +487,11 @@ public class GRNPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField lblTotalBill;
     private com.pharmacare.customui.RoundedPanel roundedPanel1;
     private com.pharmacare.customui.RoundedPanel roundedPanel2;
+    private javax.swing.JSpinner spinnerQty;
+    private javax.swing.JTable tblGrnItems;
+    private javax.swing.JTextField txtPurchasePrice;
     // End of variables declaration//GEN-END:variables
 }

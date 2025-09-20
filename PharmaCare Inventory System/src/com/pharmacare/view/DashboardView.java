@@ -39,6 +39,7 @@ public class DashboardView extends javax.swing.JFrame {
         btnNavReports = new javax.swing.JButton();
         btnNavUsers = new javax.swing.JButton();
         btnNavLogout = new javax.swing.JButton();
+        btnNavGrn = new javax.swing.JButton();
         contentPanel = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -59,7 +60,7 @@ public class DashboardView extends javax.swing.JFrame {
             }
         });
 
-        btnNavPOS.setText("POS/Sale");
+        btnNavPOS.setText("POS / Sale");
 
         btnNavMedicines.setText("Medicines");
         btnNavMedicines.addActionListener(new java.awt.event.ActionListener() {
@@ -81,6 +82,13 @@ public class DashboardView extends javax.swing.JFrame {
 
         btnNavLogout.setText("Logout");
 
+        btnNavGrn.setText("GRN / Stock In");
+        btnNavGrn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNavGrnActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout navPanelLayout = new javax.swing.GroupLayout(navPanel);
         navPanel.setLayout(navPanelLayout);
         navPanelLayout.setHorizontalGroup(
@@ -93,10 +101,11 @@ public class DashboardView extends javax.swing.JFrame {
                         .addGroup(navPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnNavLogout, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnNavPOS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnNavMedicines, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                            .addComponent(btnNavMedicines, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnNavSuppliers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnNavReports, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnNavUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(btnNavUsers, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnNavGrn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -112,12 +121,14 @@ public class DashboardView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNavSuppliers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnNavGrn)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNavReports)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNavUsers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNavLogout)
-                .addContainerGap(138, Short.MAX_VALUE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout contentPanelLayout = new javax.swing.GroupLayout(contentPanel);
@@ -256,6 +267,22 @@ public class DashboardView extends javax.swing.JFrame {
         contentPanel.repaint();
     }//GEN-LAST:event_btnNavSuppliersActionPerformed
 
+    private void btnNavGrnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNavGrnActionPerformed
+        // Create an instance of our GRNPanel
+        GRNPanel grnPanel = new GRNPanel();
+
+        // Clear the existing content of the contentPanel
+        contentPanel.removeAll();
+
+        // Set the layout and add the new panel
+        contentPanel.setLayout(new java.awt.BorderLayout());
+        contentPanel.add(grnPanel, java.awt.BorderLayout.CENTER);
+
+        // Repaint and validate to show the new content
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }//GEN-LAST:event_btnNavGrnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -293,6 +320,7 @@ public class DashboardView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnNavDashboard;
+    private javax.swing.JButton btnNavGrn;
     private javax.swing.JButton btnNavLogout;
     private javax.swing.JButton btnNavMedicines;
     private javax.swing.JButton btnNavPOS;
