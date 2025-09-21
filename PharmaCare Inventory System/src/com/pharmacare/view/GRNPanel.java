@@ -22,6 +22,11 @@ public class GRNPanel extends javax.swing.JPanel {
      */
     public GRNPanel() {
         initComponents();
+
+        // --- DATE CHOOSER එක NON-EDITABLE කරන්න මේ LINE එක දාන්න ---
+        ((com.toedter.calendar.JTextFieldDateEditor) dateGrn.getDateEditor()).setEditable(false);
+        dateGrn.setDate(new java.util.Date()); // JDateChooser එකට අද දවස set කරනවා
+
         loadSuppliers();
         loadMedicines();
 
@@ -91,7 +96,7 @@ public class GRNPanel extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         cmbSupplier = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        dateGrn = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         cmbMedicine = new javax.swing.JComboBox<>();
@@ -130,7 +135,15 @@ public class GRNPanel extends javax.swing.JPanel {
 
         cmbMedicine.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Medicine" }));
 
+        spinnerQty.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
+
         jLabel7.setText("Quantity :");
+
+        txtPurchasePrice.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPurchasePriceKeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Purch. Price :");
 
@@ -156,7 +169,7 @@ public class GRNPanel extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cmbSupplier, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(dateGrn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(roundedPanel1Layout.createSequentialGroup()
                         .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
@@ -186,7 +199,7 @@ public class GRNPanel extends javax.swing.JPanel {
                     .addComponent(cmbSupplier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dateGrn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel5)
@@ -207,7 +220,7 @@ public class GRNPanel extends javax.swing.JPanel {
                 .addContainerGap(121, Short.MAX_VALUE))
         );
 
-        roundedPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cmbSupplier, jDateChooser1, jLabel3, jLabel4});
+        roundedPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {cmbSupplier, dateGrn, jLabel3, jLabel4});
 
         roundedPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -233,6 +246,8 @@ public class GRNPanel extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tblGrnItems);
 
         jLabel10.setText("Total Bill :");
+
+        lblTotalBill.setEditable(false);
 
         btnRemove.setText("Remove Selected");
         btnRemove.addActionListener(new java.awt.event.ActionListener() {
@@ -312,10 +327,35 @@ public class GRNPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // Form එකෙන් data ගැනීම
-        Vector selectedMedicine = (Vector) cmbMedicine.getSelectedItem();
-        int medId = (int) selectedMedicine.get(0);
-        String medName = (String) selectedMedicine.get(1);
+        if (cmbMedicine.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select a medicine from the list.", "No Medicine Selected", JOptionPane.WARNING_MESSAGE);
+            return; // වැඩේ මෙතනින්ම නවත්වනවා
+        }
+
+        // ComboBox එකෙන් select කරපු බෙහෙතේ නම String එකක් විදිහට ගැනීම
+        String medName = cmbMedicine.getSelectedItem().toString();
+        int medId = 0;
+
+        // --- අලුත් Logic එක: Select කරපු නමට අදාළ ID එක හොයාගැනීම ---
+        try {
+            Connection con = DBConnection.getInstance().getConnection();
+            String sql = "SELECT id FROM medicine WHERE name = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, medName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                medId = rs.getInt("id");
+            } else {
+                // බෙහෙත හම්බවුණේ නැත්නම් මේක වැදගත්
+                JOptionPane.showMessageDialog(this, "Could not find the selected medicine in the database.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database error while fetching medicine ID.", "Database Error", JOptionPane.ERROR_MESSAGE);
+            return; // Database error එකක් ආවොත් වැඩේ නවත්වනවා
+        }
+        // --- අලුත් logic එකේ අවසානය ---
 
         int qty = (int) spinnerQty.getValue();
         double purchasePrice;
@@ -328,17 +368,17 @@ public class GRNPanel extends javax.swing.JPanel {
 
         double total = qty * purchasePrice;
 
-        if (qty <= 0 || purchasePrice <= 0) {
-            JOptionPane.showMessageDialog(this, "Quantity and Price must be greater than zero.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+        if (qty <= 0) {
+            JOptionPane.showMessageDialog(this, "Quantity must be greater than zero.", "Invalid Input", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         DefaultTableModel dtm = (DefaultTableModel) tblGrnItems.getModel();
 
-        // මේ බෙහෙත දැනටමත් cart එකේ තියෙනවද කියලා බැලීම
+        // මේ බෙහෙත දැනටමත් cart එකේ තියෙනවද කියලා බැලීම (ID එකෙන් බලන එක වඩා විශ්වාසයි)
         for (int i = 0; i < dtm.getRowCount(); i++) {
             if ((int) dtm.getValueAt(i, 0) == medId) {
-                JOptionPane.showMessageDialog(this, "This medicine is already in the list. Please remove it to add again.", "Duplicate Item", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "This medicine is already in the list.", "Duplicate Item", JOptionPane.WARNING_MESSAGE);
                 return;
             }
         }
@@ -352,8 +392,10 @@ public class GRNPanel extends javax.swing.JPanel {
         row.add(total);
         dtm.addRow(row);
 
-        // Total Bill එක update කිරීම
+        // Total bill එක update කිරීම
         updateTotalBill();
+
+        clearMedicineSection(); // Add කරපු item එකෙන් පස්සේ form එක clear කරනවා
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
@@ -375,34 +417,66 @@ public class GRNPanel extends javax.swing.JPanel {
             return;
         }
 
-        // ප්‍රධාන GRN දත්ත ගැනීම
-        Vector selectedSupplier = (Vector) cmbSupplier.getSelectedItem();
-        int supplierId = (int) selectedSupplier.get(0);
+        if (cmbSupplier.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(this, "Please select a supplier from the list.", "No Supplier Selected", JOptionPane.WARNING_MESSAGE);
+            return; // වැඩේ මෙතනින්ම නවත්වනවා
+        }
+
+        // --- Step 1: Get Supplier ID from Name ---
+        String supplierName = cmbSupplier.getSelectedItem().toString();
+        int supplierId = 0;
+
+        try {
+            Connection con = DBConnection.getInstance().getConnection();
+            String sql = "SELECT id FROM supplier WHERE name = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, supplierName);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                supplierId = rs.getInt("id");
+            } else {
+                JOptionPane.showMessageDialog(this, "Could not find the selected supplier in the database.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Database error while fetching supplier ID.", "Database Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // --- End of Step 1 ---
+
+        // --- Step 1.5: Get Date from JDateChooser ---
+        java.util.Date utilDate = dateGrn.getDate();
+        if (utilDate == null) {
+            JOptionPane.showMessageDialog(this, "Please select a valid GRN date.", "Invalid Date", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        java.sql.Date grnDate = new java.sql.Date(utilDate.getTime());
+        // --- End of Date Handling ---
+
         double totalBill = Double.parseDouble(lblTotalBill.getText());
-        java.sql.Date grnDate = new java.sql.Date(new java.util.Date().getTime()); // වත්මන් දිනය ගැනීම
 
         Connection con = null;
         try {
             con = DBConnection.getInstance().getConnection();
-            // === Transaction එක පටන් ගැනීම ===
+            // === Start Transaction ===
             con.setAutoCommit(false);
 
-            // 1. ප්‍රධාන GRN record එක INSERT කිරීම
+            // --- Step 2: Insert into 'grn' table ---
             String grnSql = "INSERT INTO grn (supplier_id, grn_date, total_bill) VALUES (?, ?, ?)";
             PreparedStatement grnPs = con.prepareStatement(grnSql, Statement.RETURN_GENERATED_KEYS);
-            grnPs.setInt(1, supplierId);
+            grnPs.setInt(1, supplierId); // Use the ID we found
             grnPs.setDate(2, grnDate);
             grnPs.setDouble(3, totalBill);
             grnPs.executeUpdate();
 
-            // 2. අලුතෙන් හැදුන GRN එකේ auto-generated ID එක ගැනීම
             ResultSet rs = grnPs.getGeneratedKeys();
             int grnId = 0;
             if (rs.next()) {
                 grnId = rs.getInt(1);
             }
 
-            // 3. Cart එකේ items ටික loop කරලා save කිරීම සහ stock update කිරීම
+            // --- Step 3: Loop through cart, insert items, and update stock ---
             String grnItemSql = "INSERT INTO grn_item (grn_id, medicine_id, quantity, purchase_price) VALUES (?, ?, ?, ?)";
             String updateStockSql = "UPDATE medicine SET quantity = quantity + ? WHERE id = ?";
 
@@ -411,17 +485,18 @@ public class GRNPanel extends javax.swing.JPanel {
 
             for (int i = 0; i < dtm.getRowCount(); i++) {
                 int medId = (int) dtm.getValueAt(i, 0);
-                int qty = (int) dtm.getValueAt(i, 2); // Corrected index for quantity
-                double purPrice = (double) dtm.getValueAt(i, 3); // Corrected index for price
+                String medName = dtm.getValueAt(i, 1).toString();
+                int qty = (int) dtm.getValueAt(i, 2);
+                double purPrice = (double) dtm.getValueAt(i, 3);
 
-                // GRN item එක INSERT කිරීම
+                // Add to grn_item batch
                 grnItemPs.setInt(1, grnId);
                 grnItemPs.setInt(2, medId);
                 grnItemPs.setInt(3, qty);
                 grnItemPs.setDouble(4, purPrice);
                 grnItemPs.addBatch();
 
-                // Medicine stock එක UPDATE කිරීම
+                // Add to medicine stock update batch
                 updateStockPs.setInt(1, qty);
                 updateStockPs.setInt(2, medId);
                 updateStockPs.addBatch();
@@ -430,16 +505,18 @@ public class GRNPanel extends javax.swing.JPanel {
             grnItemPs.executeBatch();
             updateStockPs.executeBatch();
 
-            // === හැමදේම සාර්ථක නම්, transaction එක commit කිරීම ===
+            // === If everything is successful, commit the transaction ===
             con.commit();
             JOptionPane.showMessageDialog(this, "GRN Saved Successfully!");
 
-            // Form එක clear කිරීම
+            // Clear the form
             dtm.setRowCount(0);
             updateTotalBill();
+            txtPurchasePrice.setText("");
+            spinnerQty.setValue(0);
 
         } catch (Exception e) {
-            // === මොකක් හරි error එකක් ආවොත්, transaction එක rollback කිරීම ===
+            // === If any error occurs, rollback the transaction ===
             try {
                 if (con != null) {
                     con.rollback();
@@ -450,7 +527,7 @@ public class GRNPanel extends javax.swing.JPanel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Failed to save GRN. Transaction has been rolled back.", "Database Error", JOptionPane.ERROR_MESSAGE);
         } finally {
-            // === හැමවිටම auto-commit එක ආයෙත් true බවට පත් කිරීම ===
+            // === Always set auto-commit back to true ===
             try {
                 if (con != null) {
                     con.setAutoCommit(true);
@@ -461,6 +538,20 @@ public class GRNPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    private void txtPurchasePriceKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPurchasePriceKeyTyped
+        char c = evt.getKeyChar();
+
+        // ඉලක්කම්, එක දශම තිතක් (.), සහ backspace key එකට විතරක් ඉඩ දීම
+        if (!(Character.isDigit(c) || (c == '.') || (c == java.awt.event.KeyEvent.VK_BACK_SPACE))) {
+            evt.consume(); // key press එක ignore කරනවා
+        }
+
+        // දශම තිත් එකකට වඩා type කරන එක වැළැක්වීම
+        if (c == '.' && txtPurchasePrice.getText().contains(".")) {
+            evt.consume(); // key press එක ignore කරනවා
+        }
+    }//GEN-LAST:event_txtPurchasePriceKeyTyped
+
     private void updateTotalBill() {
         DefaultTableModel dtm = (DefaultTableModel) tblGrnItems.getModel();
         double totalBill = 0;
@@ -469,13 +560,20 @@ public class GRNPanel extends javax.swing.JPanel {
         }
         lblTotalBill.setText(String.format("%.2f", totalBill));
     }
+
+    private void clearMedicineSection() {
+        cmbMedicine.setSelectedIndex(0); // "Select Medicine" කියන පළවෙනි item එක select කරනවා
+        spinnerQty.setValue(0);
+        txtPurchasePrice.setText("");
+        cmbMedicine.requestFocus(); // User ගේ cursor එක ආයෙත් Medicine ComboBox එකට ගේනවා
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnRemove;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cmbMedicine;
     private javax.swing.JComboBox<String> cmbSupplier;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDateChooser dateGrn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
