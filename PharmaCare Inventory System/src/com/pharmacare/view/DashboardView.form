@@ -157,6 +157,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="POS / Sale"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNavPOSActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnNavMedicines">
           <Properties>

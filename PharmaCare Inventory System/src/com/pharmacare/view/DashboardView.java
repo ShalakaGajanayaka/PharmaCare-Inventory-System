@@ -61,6 +61,11 @@ public class DashboardView extends javax.swing.JFrame {
         });
 
         btnNavPOS.setText("POS / Sale");
+        btnNavPOS.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNavPOSActionPerformed(evt);
+            }
+        });
 
         btnNavMedicines.setText("Medicines");
         btnNavMedicines.addActionListener(new java.awt.event.ActionListener() {
@@ -282,6 +287,15 @@ public class DashboardView extends javax.swing.JFrame {
         contentPanel.revalidate();
         contentPanel.repaint();
     }//GEN-LAST:event_btnNavGrnActionPerformed
+
+    private void btnNavPOSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNavPOSActionPerformed
+        POSPanel posPanel = new POSPanel();
+        contentPanel.removeAll();
+        contentPanel.setLayout(new java.awt.BorderLayout());
+        contentPanel.add(posPanel, java.awt.BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }//GEN-LAST:event_btnNavPOSActionPerformed
 
     /**
      * @param args the command line arguments
