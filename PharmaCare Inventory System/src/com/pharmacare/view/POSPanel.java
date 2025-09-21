@@ -1,8 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
- */
 package com.pharmacare.view;
+
+import com.pharmacare.db.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Vector;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.Statement;
 
 /**
  *
@@ -30,26 +36,26 @@ public class POSPanel extends javax.swing.JPanel {
         roundedPanel1 = new com.pharmacare.customui.RoundedPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtSearchMedicine = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
-        jButton1 = new javax.swing.JButton();
+        spinnerQty = new javax.swing.JSpinner();
+        btnAdd = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        tblBillItems = new javax.swing.JTable();
+        btnRemoveItem = new javax.swing.JButton();
         roundedPanel2 = new com.pharmacare.customui.RoundedPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        lblSubTotal = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtDiscount = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        lblNetTotal = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        txtPaidAmount = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        lblBalance = new javax.swing.JTextField();
+        btnProcessBill = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("Point of Sale (POS) ");
@@ -61,29 +67,47 @@ public class POSPanel extends javax.swing.JPanel {
 
         jLabel3.setText("Search Medicine (Name/Barcode) :  ");
 
+        txtSearchMedicine.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtSearchMedicineActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("Quantity :");
 
-        jButton1.setText("Add to Bill");
+        spinnerQty.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        btnAdd.setText("Add to Bill");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        tblBillItems.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Med. Name", "Price", "Qty", "Total"
+                "ID", "Med. Name", "Price", "Qty", "Total"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblBillItems);
 
-        jButton2.setText("Remove Item");
+        btnRemoveItem.setText("Remove Item");
+        btnRemoveItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveItemActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout roundedPanel1Layout = new javax.swing.GroupLayout(roundedPanel1);
         roundedPanel1.setLayout(roundedPanel1Layout);
@@ -94,15 +118,15 @@ public class POSPanel extends javax.swing.JPanel {
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField1)
+                    .addComponent(txtSearchMedicine)
                     .addGroup(roundedPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(spinnerQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE))
+                        .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnRemoveItem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         roundedPanel1Layout.setVerticalGroup(
@@ -113,20 +137,20 @@ public class POSPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtSearchMedicine, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jSpinner1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(spinnerQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAdd))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2)
+                .addComponent(btnRemoveItem)
                 .addContainerGap())
         );
 
-        roundedPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {jButton1, jLabel4, jSpinner1});
+        roundedPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {btnAdd, jLabel4, spinnerQty});
 
         roundedPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -137,13 +161,35 @@ public class POSPanel extends javax.swing.JPanel {
 
         jLabel7.setText("Discount % :");
 
+        txtDiscount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDiscountActionPerformed(evt);
+            }
+        });
+        txtDiscount.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDiscountKeyTyped(evt);
+            }
+        });
+
         jLabel8.setText("Net Total  :");
 
         jLabel9.setText("Paid Amount :");
 
+        txtPaidAmount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtPaidAmountActionPerformed(evt);
+            }
+        });
+
         jLabel10.setText(" Balance :");
 
-        jButton3.setText("PROCESS & PRINT BILL");
+        btnProcessBill.setText("PROCESS & PRINT BILL");
+        btnProcessBill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProcessBillActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout roundedPanel2Layout = new javax.swing.GroupLayout(roundedPanel2);
         roundedPanel2.setLayout(roundedPanel2Layout);
@@ -152,28 +198,28 @@ public class POSPanel extends javax.swing.JPanel {
             .addGroup(roundedPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                    .addComponent(btnProcessBill, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(roundedPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2))
+                        .addComponent(lblSubTotal))
                     .addGroup(roundedPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel7)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3))
+                        .addComponent(txtDiscount))
                     .addGroup(roundedPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField4))
+                        .addComponent(lblNetTotal))
                     .addGroup(roundedPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField5))
+                        .addComponent(txtPaidAmount))
                     .addGroup(roundedPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel10)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField6)))
+                        .addComponent(lblBalance)))
                 .addContainerGap())
         );
         roundedPanel2Layout.setVerticalGroup(
@@ -184,25 +230,25 @@ public class POSPanel extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSubTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblNetTotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPaidAmount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(roundedPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblBalance, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnProcessBill)
                 .addContainerGap(130, Short.MAX_VALUE))
         );
 
@@ -233,11 +279,332 @@ public class POSPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtSearchMedicineActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSearchMedicineActionPerformed
+        String searchText = txtSearchMedicine.getText().trim();
+        if (searchText.isEmpty()) {
+            return; // Do nothing if search is empty
+        }
 
+        try {
+            Connection con = DBConnection.getInstance().getConnection();
+            // Search by either barcode OR name
+            String sql = "SELECT id, name, selling_price, quantity FROM medicine WHERE barcode = ? OR name LIKE ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, searchText);
+            ps.setString(2, "%" + searchText + "%"); // The '%' are wildcards for partial name search
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                // Medicine found, now add it to the bill
+                int medId = rs.getInt("id");
+                String medName = rs.getString("name");
+                double price = rs.getDouble("selling_price");
+                int stockQty = rs.getInt("quantity");
+
+                int requiredQty = (int) spinnerQty.getValue();
+
+                // --- Stock Validation ---
+                if (requiredQty > stockQty) {
+                    JOptionPane.showMessageDialog(this, "Not enough stock for " + medName + ". Available: " + stockQty, "Stock Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // --- Add the item to the bill table ---
+                addItemToBill(medId, medName, price, requiredQty);
+
+                // --- Clear fields for next item ---
+                txtSearchMedicine.setText("");
+                spinnerQty.setValue(1);
+                txtSearchMedicine.requestFocus(); // Set focus back to search
+
+            } else {
+                // Medicine not found
+                JOptionPane.showMessageDialog(this, "Medicine not found for: " + searchText, "Not Found", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error fetching medicine data.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_txtSearchMedicineActionPerformed
+
+    private void btnRemoveItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveItemActionPerformed
+        DefaultTableModel dtm = (DefaultTableModel) tblBillItems.getModel();
+        int selectedRow = tblBillItems.getSelectedRow();
+
+        if (selectedRow != -1) {
+            dtm.removeRow(selectedRow);
+            updateTotals(); // Recalculate totals after removing
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select an item from the bill to remove.", "No Item Selected", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnRemoveItemActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        txtSearchMedicineActionPerformed(evt);
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void txtPaidAmountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaidAmountActionPerformed
+        try {
+            double netTotal = Double.parseDouble(lblNetTotal.getText());
+            double paidAmount = Double.parseDouble(txtPaidAmount.getText());
+
+            if (paidAmount < netTotal) {
+                // ගෙවන මුදල අඩු නම් warning එකක් පෙන්නුවත්, balance එක calculate කරනවා
+                JOptionPane.showMessageDialog(this, "Paid amount is less than the total bill!", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+
+            double balance = paidAmount - netTotal;
+            lblBalance.setText(String.format("%.2f", balance));
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid paid amount.", "Invalid Number", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_txtPaidAmountActionPerformed
+
+    private void btnProcessBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProcessBillActionPerformed
+        DefaultTableModel dtm = (DefaultTableModel) tblBillItems.getModel();
+        if (dtm.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "The bill is empty.", "Empty Bill", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (txtPaidAmount.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter the paid amount.", "Payment Required", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // --- Payment details ටික ගැනීම ---
+        double netTotal = Double.parseDouble(lblNetTotal.getText());
+        double paidAmount = Double.parseDouble(txtPaidAmount.getText());
+        double balance = Double.parseDouble(lblBalance.getText());
+
+        if (paidAmount < netTotal) {
+            JOptionPane.showMessageDialog(this, "Paid amount is less than the total bill. Cannot process.", "Payment Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Connection con = null;
+        try {
+            con = DBConnection.getInstance().getConnection();
+            // === TRANSACTION එක පටන් ගැනීම ===
+            con.setAutoCommit(false);
+
+            // --- 1. 'invoice' table එකට INSERT කිරීම ---
+            String invoiceSql = "INSERT INTO invoice (net_total, paid_amount, balance) VALUES (?, ?, ?)";
+            PreparedStatement invoicePs = con.prepareStatement(invoiceSql, Statement.RETURN_GENERATED_KEYS);
+            invoicePs.setDouble(1, netTotal);
+            invoicePs.setDouble(2, paidAmount);
+            invoicePs.setDouble(3, balance);
+            invoicePs.executeUpdate();
+
+            ResultSet rs = invoicePs.getGeneratedKeys();
+            int invoiceId = 0;
+            if (rs.next()) {
+                invoiceId = rs.getInt(1);
+            }
+
+            // --- 2. 'invoice_item' වලට INSERT කිරීම සහ medicine stock එක UPDATE කිරීම ---
+            String itemSql = "INSERT INTO invoice_item (invoice_id, medicine_id, quantity, unit_price) VALUES (?, ?, ?, ?)";
+            String stockSql = "UPDATE medicine SET quantity = quantity - ? WHERE id = ?";
+
+            PreparedStatement itemPs = con.prepareStatement(itemSql);
+            PreparedStatement stockPs = con.prepareStatement(stockSql);
+
+            for (int i = 0; i < dtm.getRowCount(); i++) {
+                int medId = (int) dtm.getValueAt(i, 0);
+                double price = (double) dtm.getValueAt(i, 2);
+                int qty = (int) dtm.getValueAt(i, 3);
+
+                // invoice_item batch එකට add කිරීම
+                itemPs.setInt(1, invoiceId);
+                itemPs.setInt(2, medId);
+                itemPs.setInt(3, qty);
+                itemPs.setDouble(4, price);
+                itemPs.addBatch();
+
+                // stock update batch එකට add කිරීම
+                stockPs.setInt(1, qty);
+                stockPs.setInt(2, medId);
+                stockPs.addBatch();
+            }
+
+            itemPs.executeBatch();
+            stockPs.executeBatch();
+
+            // === හැම query එකක්ම සාර්ථක නම්, transaction එක COMMIT කිරීම ===
+            con.commit();
+            JOptionPane.showMessageDialog(this, "Bill Processed Successfully!");
+
+            // --- 3. Receipt එක Print කිරීම ---
+            printReceipt(invoiceId);
+
+            // --- 4. ඊළඟ sale එකට form එක සම්පූර්ණයෙන්ම clear කිරීම ---
+            clearPosForm();
+
+        } catch (Exception e) {
+            // === මොකක් හරි error එකක් ආවොත්, transaction එක ROLLBACK කිරීම ===
+            try {
+                if (con != null) {
+                    con.rollback();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to process bill. Transaction has been rolled back.", "Database Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            // === හැමවිටම auto-commit එක ආයෙත් true බවට පත් කිරීම ===
+            try {
+                if (con != null) {
+                    con.setAutoCommit(true);
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_btnProcessBillActionPerformed
+
+    private void txtDiscountKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDiscountKeyTyped
+        char c = evt.getKeyChar();
+
+        // ඉලක්කම් (digits), එක දශම තිතක් (.), සහ backspace key එකට විතරක් ඉඩ දීම
+        if (!(Character.isDigit(c) || (c == '.') || (c == java.awt.event.KeyEvent.VK_BACK_SPACE) || (c == java.awt.event.KeyEvent.VK_DELETE))) {
+            evt.consume(); // අනවශ්‍ය key press එක ignore (නොසලකා) කරනවා
+        }
+
+        // දශම තිත් එකකට වඩා type කරන එක වැළැක්වීම
+        if (c == '.' && txtDiscount.getText().contains(".")) {
+            evt.consume(); // key press එක ignore කරනවා
+        }
+    }//GEN-LAST:event_txtDiscountKeyTyped
+
+    private void txtDiscountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiscountActionPerformed
+        // Discount field එකේ Enter press කළාම, හැමදේම නැවත calculate කරනවා.
+        updateTotals();
+
+        // Paid amount එකක් දැනටමත් දාලා තියෙනවා නම්, balance එකත් නැවත calculate කරන එක හොඳයි
+        if (!txtPaidAmount.getText().isEmpty()) {
+            txtPaidAmountActionPerformed(null); // Paid amount logic එක ආයෙත් call කරනවා
+        }
+    }//GEN-LAST:event_txtDiscountActionPerformed
+
+    private void printReceipt(int invoiceId) {
+        int confirm = JOptionPane.showConfirmDialog(this, "Do you want to print the receipt?", "Print Receipt", JOptionPane.YES_NO_OPTION);
+
+        if (confirm == JOptionPane.YES_OPTION) {
+            try {
+                Connection con = DBConnection.getInstance().getConnection();
+                String reportPath = "src/reports/rpt_receipt.jrxml";
+
+                // --- Invoice ID එක parameter එකක් විදිහට යැවීම ---
+                java.util.HashMap<String, Object> parameters = new java.util.HashMap<>();
+                parameters.put("P_INVOICE_ID", invoiceId);
+                // ඔයාට තව parameters මෙතනට add කරන්න පුළුවන් (company name, address, etc.)
+
+                net.sf.jasperreports.engine.JasperReport jr = net.sf.jasperreports.engine.JasperCompileManager.compileReport(reportPath);
+                net.sf.jasperreports.engine.JasperPrint jp = net.sf.jasperreports.engine.JasperFillManager.fillReport(jr, parameters, con);
+                net.sf.jasperreports.view.JasperViewer.viewReport(jp, false);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error printing receipt: " + e.getMessage(), "Report Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    // --- Form එක clear කරන helper method එක ---
+    private void clearPosForm() {
+        DefaultTableModel dtm = (DefaultTableModel) tblBillItems.getModel();
+        dtm.setRowCount(0);
+
+        txtSearchMedicine.setText("");
+        spinnerQty.setValue(1);
+
+        lblSubTotal.setText("0.00");
+        // txtDiscount.setText("0.00"); // ඔයාට discount field එකක් තියෙනවා නම්
+        lblNetTotal.setText("0.00");
+        txtPaidAmount.setText("");
+        lblBalance.setText("0.00");
+
+        txtSearchMedicine.requestFocus();
+    }
+
+    private void addItemToBill(int medId, String medName, double price, int qty) {
+        DefaultTableModel dtm = (DefaultTableModel) tblBillItems.getModel();
+        double total = price * qty;
+
+        // Check if the same medicine is already in the bill to update its quantity
+        for (int i = 0; i < dtm.getRowCount(); i++) {
+            if ((int) dtm.getValueAt(i, 0) == medId) {
+                // දැනට තියෙන quantity එක COLUMN 3න් ගැනීම
+                int currentQty = (int) dtm.getValueAt(i, 3);
+                int newQty = currentQty + qty;
+
+                // ToDo: අලුත් මුළු quantity එකට stock එක ආයෙත් check කරන්න
+                // unit price එක COLUMN 2න් ගැනීම
+                double unitPrice = (double) dtm.getValueAt(i, 2);
+                double newTotal = unitPrice * newQty;
+
+                // quantity එක COLUMN 3 එකේ update කිරීම
+                dtm.setValueAt(newQty, i, 3);
+
+                // total එක COLUMN 4 එකේ update කිරීම
+                dtm.setValueAt(newTotal, i, 4);
+
+                updateTotals(); // Bill totals නැවත ගණනය කිරීම
+                return; // Update කළාට පස්සේ method එකෙන් exit වීම
+            }
+        }
+
+        // If not found, add as a new row
+        Vector row = new Vector();
+        row.add(medId);         // Index 0
+        row.add(medName);       // Index 1
+        row.add(price);         // Index 2
+        row.add(qty);           // Index 3
+        row.add(total);         // Index 4
+        dtm.addRow(row);
+
+        updateTotals(); // Recalculate bill totals
+    }
+
+    private void updateTotals() {
+        DefaultTableModel dtm = (DefaultTableModel) tblBillItems.getModel();
+        double subTotal = 0;
+
+        // Table එකෙන් Sub Total එක calculate කිරීම
+        for (int i = 0; i < dtm.getRowCount(); i++) {
+            subTotal += (double) dtm.getValueAt(i, 4); // Total එක තියෙන්නේ column 4 එකේ
+        }
+        lblSubTotal.setText(String.format("%.2f", subTotal));
+
+        // --- අලුත් DISCOUNT LOGIC එක ---
+        double discountPercentage = 0;
+        try {
+            // Text field එකෙන් percentage එක කියවීම
+            if (!txtDiscount.getText().isEmpty()) {
+                discountPercentage = Double.parseDouble(txtDiscount.getText());
+            }
+        } catch (NumberFormatException e) {
+            // User වැරදි දෙයක් type කළොත්, discount එක 0 ලෙස සලකනවා
+            discountPercentage = 0;
+        }
+
+        // Discount මුදල calculate කිරීම
+        double discountAmount = subTotal * (discountPercentage / 100.0);
+
+        // අලුත් Net Total එක calculate කිරීම
+        double netTotal = subTotal - discountAmount;
+
+        lblNetTotal.setText(String.format("%.2f", netTotal));
+        // --- අලුත් LOGIC එකේ අවසානය ---
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnProcessBill;
+    private javax.swing.JButton btnRemoveItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -249,15 +616,15 @@ public class POSPanel extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField lblBalance;
+    private javax.swing.JTextField lblNetTotal;
+    private javax.swing.JTextField lblSubTotal;
     private com.pharmacare.customui.RoundedPanel roundedPanel1;
     private com.pharmacare.customui.RoundedPanel roundedPanel2;
+    private javax.swing.JSpinner spinnerQty;
+    private javax.swing.JTable tblBillItems;
+    private javax.swing.JTextField txtDiscount;
+    private javax.swing.JTextField txtPaidAmount;
+    private javax.swing.JTextField txtSearchMedicine;
     // End of variables declaration//GEN-END:variables
 }
