@@ -84,6 +84,11 @@ public class DashboardView extends javax.swing.JFrame {
         btnNavReports.setText("Reports");
 
         btnNavUsers.setText("Users");
+        btnNavUsers.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNavUsersActionPerformed(evt);
+            }
+        });
 
         btnNavLogout.setText("Logout");
 
@@ -296,6 +301,15 @@ public class DashboardView extends javax.swing.JFrame {
         contentPanel.revalidate();
         contentPanel.repaint();
     }//GEN-LAST:event_btnNavPOSActionPerformed
+
+    private void btnNavUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNavUsersActionPerformed
+        UserPanel userPanel = new UserPanel();
+        contentPanel.removeAll();
+        contentPanel.setLayout(new java.awt.BorderLayout());
+        contentPanel.add(userPanel, java.awt.BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }//GEN-LAST:event_btnNavUsersActionPerformed
 
     /**
      * @param args the command line arguments
