@@ -21,37 +21,38 @@ public class DashboardHomePanel extends javax.swing.JPanel {
     }
 
     private void loadDashboardStats() {
-        try (Connection con = DBConnection.getInstance().getConnection()) {
+        // අපි connection එක ගන්නවා, ඒත් ඒක try-with-resources block එකක දාන්නේ නෑ
+        try {
+            Connection con = DBConnection.getInstance().getConnection();
+
             // --- 1. මුළු බෙහෙත් වර්ග ගණන ගැනීම ---
-            Statement medStmt = con.createStatement();
-            ResultSet medRs = medStmt.executeQuery("SELECT COUNT(id) AS med_count FROM medicine");
-            if (medRs.next()) {
-                lblTotalMedicines.setText(String.valueOf(medRs.getInt("med_count")));
+            try (Statement medStmt = con.createStatement(); ResultSet medRs = medStmt.executeQuery("SELECT COUNT(id) AS med_count FROM medicine")) {
+                if (medRs.next()) {
+                    lblTotalMedicines.setText(String.valueOf(medRs.getInt("med_count")));
+                }
             }
 
             // --- 2. තොග අවම බෙහෙත් ගණන ගැනීම ---
-            Statement lowStockStmt = con.createStatement();
-            // reorder_level එක සීමාව ලෙස සලකමු
-            ResultSet lowStockRs = lowStockStmt.executeQuery("SELECT COUNT(id) AS low_stock_count FROM medicine WHERE quantity <= reorder_level");
-            if (lowStockRs.next()) {
-                lblLowStockItems.setText(String.valueOf(lowStockRs.getInt("low_stock_count")));
+            try (Statement lowStockStmt = con.createStatement(); ResultSet lowStockRs = lowStockStmt.executeQuery("SELECT COUNT(id) AS low_stock_count FROM medicine WHERE quantity <= reorder_level")) {
+                if (lowStockRs.next()) {
+                    lblLowStockItems.setText(String.valueOf(lowStockRs.getInt("low_stock_count")));
+                }
             }
 
+            // ... ඔයාගේ අනිත් queries වලටත් මේ විදිහටම ...
             // --- 3. මුළු සැපයුම්කරුවන් ගණන ගැනීම ---
-            Statement supStmt = con.createStatement();
-            ResultSet supRs = supStmt.executeQuery("SELECT COUNT(id) AS sup_count FROM supplier");
-            if (supRs.next()) {
-                // ඔයාගේ dashboard එකේ lblTotalSuppliers කියලා label එකක් තියෙනවා කියලා හිතමු
-                lblTotalSuppliers.setText(String.valueOf(supRs.getInt("sup_count")));
+            try (Statement supStmt = con.createStatement(); ResultSet supRs = supStmt.executeQuery("SELECT COUNT(id) AS sup_count FROM supplier")) {
+                if (supRs.next()) {
+                    lblTotalSuppliers.setText(String.valueOf(supRs.getInt("sup_count")));
+                }
             }
 
             // --- 4. අද දවසේ මුළු විකුණුම් ගැනීම ---
-            PreparedStatement salesStmt = con.prepareStatement("SELECT SUM(net_total) AS today_sales FROM invoice WHERE DATE(sale_date) = CURDATE()");
-            ResultSet salesRs = salesStmt.executeQuery();
-            if (salesRs.next()) {
-                // අද විකුණුම් නැත්නම් SUM එක NULL වෙන්න පුළුවන්, ඒ නිසා අපි ඒක check කරනවා
-                double todaySales = salesRs.getDouble("today_sales");
-                lblTodaySales.setText(String.format("Rs. %.2f", todaySales));
+            try (PreparedStatement salesStmt = con.prepareStatement("SELECT SUM(net_total) AS today_sales FROM invoice WHERE DATE(sale_date) = CURDATE()"); ResultSet salesRs = salesStmt.executeQuery()) {
+                if (salesRs.next()) {
+                    double todaySales = salesRs.getDouble("today_sales");
+                    lblTodaySales.setText(String.format("Rs. %.2f", todaySales));
+                }
             }
 
         } catch (Exception e) {
