@@ -135,12 +135,16 @@ public class LoginView extends javax.swing.JFrame {
                 // Login Successfull!
                 // Hide the login window
                 this.setVisible(false);
-                
+
+                // save id and username
+                com.pharmacare.util.CurrentUser.setUserId(rs.getInt("id"));
+                com.pharmacare.util.CurrentUser.setUsername(rs.getString("username"));
+
                 // Create show the dashboard
                 DashboardView dashboard = new DashboardView();
                 dashboard.setLocationRelativeTo(null); // Center the dashboard
                 dashboard.setVisible(true);
-                
+
                 // Close the login window permenently
                 this.dispose();
 

@@ -50,6 +50,7 @@ public class DashboardView extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
+        menuChangePassword = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
@@ -171,7 +172,7 @@ public class DashboardView extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnNavReports)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnNavLogout)
                 .addContainerGap())
         );
@@ -186,7 +187,7 @@ public class DashboardView extends javax.swing.JFrame {
         );
         contentPanelLayout.setVerticalGroup(
             contentPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 341, Short.MAX_VALUE)
+            .addGap(0, 453, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -206,6 +207,14 @@ public class DashboardView extends javax.swing.JFrame {
             }
         });
         jMenu1.add(jMenuItem2);
+
+        menuChangePassword.setText("Change Password");
+        menuChangePassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuChangePasswordActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menuChangePassword);
 
         jMenuBar1.add(jMenu1);
 
@@ -357,6 +366,14 @@ public class DashboardView extends javax.swing.JFrame {
         contentPanel.repaint();
     }//GEN-LAST:event_btnNavHistoryActionPerformed
 
+    private void menuChangePasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuChangePasswordActionPerformed
+        // අපි 'this' (Dashboard JFrame එක) සහ 'true' (modal) pass කරනවා
+        // Modal 'true' කියන්නේ, මේ dialog එක close කරනකම් user ට ආපහු dashboard එක click කරන්න බෑ
+        ChangePasswordDialog dialog = new ChangePasswordDialog(this, true);
+        dialog.setLocationRelativeTo(this); // Dashboard එක මැදට වෙන්න පෙන්නනවා
+        dialog.setVisible(true);
+    }//GEN-LAST:event_menuChangePasswordActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -415,6 +432,7 @@ public class DashboardView extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem menuChangePassword;
     private javax.swing.JPanel navPanel;
     // End of variables declaration//GEN-END:variables
 }
