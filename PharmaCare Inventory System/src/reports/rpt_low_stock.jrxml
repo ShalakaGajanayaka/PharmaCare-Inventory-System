@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.5.final using JasperReports Library version 6.21.5-74d586df47b25dbd05bd0957999819196e59934a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rpt_low_stock" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="de353386-7a8c-4ca4-b75b-11267c2341bc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="pharmacare_db_conn"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT barcode, name, quantity, reorder_level FROM medicine WHERE quantity <= reorder_level]]>
+	</queryString>
+	<field name="barcode" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="barcode"/>
+		<property name="com.jaspersoft.studio.field.label" value="barcode"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="medicine"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="medicine"/>
+	</field>
+	<field name="quantity" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="quantity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="medicine"/>
+	</field>
+	<field name="reorder_level" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="reorder_level"/>
+		<property name="com.jaspersoft.studio.field.label" value="reorder_level"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="medicine"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="545" height="30" uuid="48570286-b9d1-43d6-9343-a41afd73050f"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[PharmaCare Inventory System]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="70" height="19" uuid="bfe2a00c-c8a5-4dd5-a4db-21bbb5c3d03e"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Report Title:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="130" height="20" uuid="951a62e4-38bf-437d-bbef-0e1997be9d92"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Low Stock Items Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="80" height="20" uuid="784dace5-7699-44e9-ba55-6bf38597cc2d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Generated On:]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="80" y="20" width="140" height="20" uuid="9be1a026-34df-4110-96aa-2b2f319e1ce0"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="130" height="20" uuid="e2828b77-1693-4ed6-a1df-8bd1c3e3fb01"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Barcode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="175" height="20" uuid="b9ef7219-7ace-4e3f-b757-aedb8389d1c5"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medicine Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="305" y="0" width="120" height="20" uuid="c989873f-a083-4601-8abf-34d70526a64c"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Current Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="0" width="120" height="20" uuid="58f1304c-15a7-4e8f-8a42-8e70e204657b"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Re-Order Level]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="130" height="20" uuid="2e349945-f0d6-4318-8328-c0ab5149650c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a38e3aa0-148f-4bf9-952f-08dfbbcb2f68"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{barcode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="175" height="20" uuid="2f501d15-d3a4-40f4-8b7e-96bbcb70a8cc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="53a16456-df48-45d5-8d18-7dfa16b27663"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="305" y="0" width="120" height="20" uuid="956828b1-1421-4242-b38c-e9ac07ec2c78">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b7e1a703-b2fe-4791-be9d-c1ed49d99dad"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="0" width="119" height="20" uuid="47420c09-d5ec-4384-ab38-1d66a5460c74">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb5d6322-3372-4735-8b4f-514cac6f3ea7"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reorder_level}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="30" uuid="de3925a6-46df-4e46-bb40-8b9e9c011561"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="100" y="0" width="100" height="30" uuid="bc5054cc-9a51-41d7-8284-ea3c39693457"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="321" y="2" width="110" height="20" uuid="943fe728-c698-4234-acc1-0f3e46cba676"/>
+				<text><![CDATA[Total Low Stock Items:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="431" y="2" width="114" height="20" uuid="a82398e3-860e-4719-901f-6cef967ae0ba"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<noData>
+		<band height="131">
+			<staticText>
+				<reportElement x="0" y="90" width="544" height="20" uuid="fb87ac36-8125-42e9-844b-9c6daeafa689"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[No Low Stock Items to Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="545" height="30" uuid="47be9434-31d1-43ad-a5e5-eb64a26a8052"/>
+				<textElement textAlignment="Center">
+					<font size="22" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[PharmaCare Inventory System]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="70" height="19" uuid="bfbe4ac6-176c-4dec-acb2-93646c8b63c3"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Report Title:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="40" width="130" height="20" uuid="bb15096d-b5c1-4f5a-b552-6750ae9790e8"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Low Stock Items Report]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="80" height="20" uuid="039a3b53-cdf1-4302-80b9-61422f33b7e9"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Generated On:]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="80" y="60" width="140" height="20" uuid="aea97d27-af60-4afa-9e9e-2c7c69aec1b8"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</noData>
+</jasperReport>

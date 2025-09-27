@@ -4,6 +4,10 @@
  */
 package com.pharmacare.view;
 
+import com.pharmacare.db.DBConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 /**
  *
  * @author shala
@@ -54,6 +58,8 @@ public class MedicinePanel extends javax.swing.JPanel {
         btnDelete = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
         lblMedicineId = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        spinnerReorderLevel = new javax.swing.JSpinner();
         medicineListPanel = new com.pharmacare.customui.RoundedPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -128,6 +134,8 @@ public class MedicinePanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Re-Order Lvl :");
+
         javax.swing.GroupLayout medicineDetailsPanelLayout = new javax.swing.GroupLayout(medicineDetailsPanel);
         medicineDetailsPanel.setLayout(medicineDetailsPanelLayout);
         medicineDetailsPanelLayout.setHorizontalGroup(
@@ -136,33 +144,25 @@ public class MedicinePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtMedicineName))
+                        .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel18)
+                            .addComponent(jLabel16))
+                        .addGap(6, 6, 6)
+                        .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField10)
+                            .addComponent(spinnerQty)))
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel16)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(spinnerQty))
+                        .addComponent(spinnerReorderLevel))
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField9))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel18)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField10))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel19)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtSellPrice))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dateExpiry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
-                        .addComponent(jLabel21)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel17)
+                            .addComponent(jLabel15))
+                        .addGap(6, 6, 6)
+                        .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField9)
+                            .addComponent(txtMedicineName)))
                     .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -181,9 +181,22 @@ public class MedicinePanel extends javax.swing.JPanel {
                                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblMedicineId, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
+                        .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel20)
+                            .addComponent(jLabel19)
+                            .addComponent(jLabel21))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtSellPrice)
+                            .addComponent(dateExpiry, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
+
+        medicineDetailsPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jLabel1, jLabel14, jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel20, jLabel21});
+
         medicineDetailsPanelLayout.setVerticalGroup(
             medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(medicineDetailsPanelLayout.createSequentialGroup()
@@ -209,6 +222,10 @@ public class MedicinePanel extends javax.swing.JPanel {
                     .addComponent(spinnerQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(spinnerReorderLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(medicineDetailsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18)
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -229,10 +246,10 @@ public class MedicinePanel extends javax.swing.JPanel {
                     .addComponent(btnUpdate)
                     .addComponent(btnDelete)
                     .addComponent(btnClear))
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
 
-        medicineDetailsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {dateExpiry, jComboBox2, jLabel14, jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel20, jLabel21, jTextField10, jTextField9, spinnerQty, txtBarcode, txtMedicineName, txtSellPrice});
+        medicineDetailsPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {dateExpiry, jComboBox2, jLabel1, jLabel14, jLabel15, jLabel16, jLabel17, jLabel18, jLabel19, jLabel20, jLabel21, jTextField10, jTextField9, spinnerQty, spinnerReorderLevel, txtBarcode, txtMedicineName, txtSellPrice});
 
         medicineListPanel.setBackground(new java.awt.Color(255, 255, 255));
         medicineListPanel.setCornerRadius(20);
@@ -250,17 +267,17 @@ public class MedicinePanel extends javax.swing.JPanel {
 
         tblMedicines.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Barcode", "Name", "Qty", "Price", "Expire"
+                "ID", "Barcode", "Name", "Qty", "Price", "Expire", "Re-Order Lvl"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -281,7 +298,7 @@ public class MedicinePanel extends javax.swing.JPanel {
             .addGroup(medicineListPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(medicineListPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 344, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 529, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(medicineListPanelLayout.createSequentialGroup()
                         .addComponent(jLabel11)
@@ -343,6 +360,7 @@ public class MedicinePanel extends javax.swing.JPanel {
         String name = txtMedicineName.getText();
         int quantity = (int) spinnerQty.getValue();
         double sellingPrice = Double.parseDouble(txtSellPrice.getText()); // Assuming you have txtSellPrice
+        int reorderLevel = (int) spinnerReorderLevel.getValue();
 
         // Date handling
         java.util.Date utilDate = dateExpiry.getDate();
@@ -355,15 +373,18 @@ public class MedicinePanel extends javax.swing.JPanel {
         }
 
         try {
-            java.sql.Connection con = com.pharmacare.db.DBConnection.getInstance().getConnection();
-            String sql = "INSERT INTO medicine (barcode, name, quantity, selling_price, expiry_date) VALUES (?, ?, ?, ?, ?)";
-            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            Connection con = DBConnection.getInstance().getConnection();
+            // query එකට 'reorder_level' column එක එකතු කිරීම
+            String sql = "INSERT INTO medicine (barcode, name, quantity, selling_price, expiry_date, reorder_level) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement ps = con.prepareStatement(sql);
 
+            // ... අනිත් parameters set කිරීම ps.setString(1, barcode), etc. ...
             ps.setString(1, barcode);
             ps.setString(2, name);
             ps.setInt(3, quantity);
             ps.setDouble(4, sellingPrice);
             ps.setDate(5, sqlDate);
+            ps.setInt(6, reorderLevel); // අලුත් parameter එක set කිරීම
 
             int result = ps.executeUpdate();
 
@@ -395,6 +416,7 @@ public class MedicinePanel extends javax.swing.JPanel {
             int quantity = Integer.parseInt(dtm.getValueAt(selectedRow, 3).toString());
             String price = dtm.getValueAt(selectedRow, 4).toString();
             java.util.Date expiryDate = (java.util.Date) dtm.getValueAt(selectedRow, 5);
+            int reorderLevel = (int) dtm.getValueAt(selectedRow, 6); // 7 වෙනි column එකෙන් (index 6) අගය ගැනීම
 
             // Set data to the form fields
             txtBarcode.setText(barcode); // Assuming you have these variable names
@@ -402,6 +424,7 @@ public class MedicinePanel extends javax.swing.JPanel {
             spinnerQty.setValue(quantity);
             txtSellPrice.setText(price);
             dateExpiry.setDate(expiryDate);
+            spinnerReorderLevel.setValue(reorderLevel); // අලුත් spinner එකට අගය set කිරීම
 
             // Store the selected ID in a hidden label or a class variable for later use
             // This is a good practice. Let's create a hidden label.
@@ -412,6 +435,7 @@ public class MedicinePanel extends javax.swing.JPanel {
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
         String id = lblMedicineId.getText(); // Get the ID from our hidden label
+        int reorderLevel = (int) spinnerReorderLevel.getValue();
 
         // Check if an ID is selected
         if (id.isEmpty() || id.equals("0")) {
@@ -427,15 +451,18 @@ public class MedicinePanel extends javax.swing.JPanel {
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         try {
-            java.sql.Connection con = com.pharmacare.db.DBConnection.getInstance().getConnection();
-            String sql = "UPDATE medicine SET name = ?, quantity = ?, selling_price = ?, expiry_date = ? WHERE id = ?";
-            java.sql.PreparedStatement ps = con.prepareStatement(sql);
+            Connection con = DBConnection.getInstance().getConnection();
+            // query එකට 'reorder_level' column එක එකතු කිරීම
+            String sql = "UPDATE medicine SET name = ?, quantity = ?, selling_price = ?, expiry_date = ?, reorder_level = ? WHERE id = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
 
+            // ... අනිත් parameters set කිරීම ...
             ps.setString(1, name);
             ps.setInt(2, quantity);
             ps.setDouble(3, sellingPrice);
             ps.setDate(4, sqlDate);
-            ps.setInt(5, Integer.parseInt(id)); // Set the ID for the WHERE clause
+            ps.setInt(5, reorderLevel); // අලුත් parameter එක set කිරීම
+            ps.setInt(6, Integer.parseInt(id)); // WHERE clause එකේ ID එක
 
             int result = ps.executeUpdate();
 
@@ -515,7 +542,7 @@ public class MedicinePanel extends javax.swing.JPanel {
 
         try {
             java.sql.Connection con = com.pharmacare.db.DBConnection.getInstance().getConnection();
-            String sql = "SELECT * FROM medicine";
+            String sql = "SELECT id, barcode, name, quantity, selling_price, expiry_date, reorder_level FROM medicine";
             java.sql.Statement st = con.createStatement();
             java.sql.ResultSet rs = st.executeQuery(sql);
 
@@ -527,6 +554,9 @@ public class MedicinePanel extends javax.swing.JPanel {
                 row.add(rs.getInt("quantity"));
                 row.add(rs.getDouble("selling_price"));
                 row.add(rs.getDate("expiry_date"));
+                // --- 2 වෙනි වෙනස: reorder_level අගය row vector එකට එකතු කිරීම ---
+                row.add(rs.getInt("reorder_level")); // මේක එන්නේ index 6 එකට
+
                 dtm.addRow(row);
             }
 
@@ -552,6 +582,7 @@ public class MedicinePanel extends javax.swing.JPanel {
     private javax.swing.JButton btnUpdate;
     private com.toedter.calendar.JDateChooser dateExpiry;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -571,6 +602,7 @@ public class MedicinePanel extends javax.swing.JPanel {
     private com.pharmacare.customui.RoundedPanel medicineDetailsPanel;
     private com.pharmacare.customui.RoundedPanel medicineListPanel;
     private javax.swing.JSpinner spinnerQty;
+    private javax.swing.JSpinner spinnerReorderLevel;
     private javax.swing.JTable tblMedicines;
     private javax.swing.JTextField txtBarcode;
     private javax.swing.JTextField txtMedicineName;

@@ -88,6 +88,11 @@ public class DashboardView extends javax.swing.JFrame {
         });
 
         btnNavReports.setText("Reports");
+        btnNavReports.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNavReportsActionPerformed(evt);
+            }
+        });
 
         btnNavUsers.setText("Users");
         btnNavUsers.addActionListener(new java.awt.event.ActionListener() {
@@ -373,6 +378,15 @@ public class DashboardView extends javax.swing.JFrame {
         dialog.setLocationRelativeTo(this); // Dashboard එක මැදට වෙන්න පෙන්නනවා
         dialog.setVisible(true);
     }//GEN-LAST:event_menuChangePasswordActionPerformed
+
+    private void btnNavReportsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNavReportsActionPerformed
+        ReportsPanel reportsPanel = new ReportsPanel();
+        contentPanel.removeAll();
+        contentPanel.setLayout(new java.awt.BorderLayout());
+        contentPanel.add(reportsPanel, java.awt.BorderLayout.CENTER);
+        contentPanel.revalidate();
+        contentPanel.repaint();
+    }//GEN-LAST:event_btnNavReportsActionPerformed
 
     /**
      * @param args the command line arguments
